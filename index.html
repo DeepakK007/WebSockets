@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO Example</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
+</head>
+<body>
+  <input type="text" id="msg">
+  <button onclick="receiverText()">Send</button>
+  <script>
+    let messageT = ""
+    
+    const socket = io('http://localhost:3000/');
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+
+      socket.emit('chat message', 'Hello, Socket.IO!');
+    });
+    function receiverText(){
+      const val = document.getElementById('msg').value;
+      messageT = val
+      socket.emit('chat message', messageT);
+    }
+    socket.on('chat message', (message) => {
+      console.log(`Received: ${message}`);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+
+    socket.on('error', (error) => {
+      console.error(`Error: ${error}`);
+    });
+  </script>
+</body>
+</html>
