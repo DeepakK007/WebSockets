@@ -2,29 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Socket.IO Example</title>
+  <title>User A</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
 </head>
 <body>
+  <div id="chatLog">
+
+  </div>
   <input type="text" id="msg">
   <button onclick="receiverText()">Send</button>
   <script>
     let messageT = ""
-    
-    const socket = io('http://localhost:3000/');
+    let lastMadded =0;
+    const socket = io('http://192.168.1.111:3000/');
+    //const socket = io('http://localhost:3000/');
 
     socket.on('connect', () => {
       console.log('Connected to server');
-
-      socket.emit('chat message', 'Hello, Socket.IO!');
     });
     function receiverText(){
       const val = document.getElementById('msg').value;
-      messageT = val
+      messageT = "User A : "+val;
+      document.getElementById('msg').value='';
       socket.emit('chat message', messageT);
     }
-    socket.on('chat message', (message) => {
-      console.log(`Received: ${message}`);
+    socket.on('chat message', (messages) => {
+      //console.log(`User A: ${message}`);
+      messages = JSON.parse(messages);
+      const chatId = document.getElementById('chatLog');
+      for(i=lastMadded;i<messages.log.length;i++){
+                chatId.innerHTML+=`<div>${messages.log[i]}</div>`;
+            }
+            lastMadded = messages.log.length;
     });
 
     socket.on('disconnect', () => {
