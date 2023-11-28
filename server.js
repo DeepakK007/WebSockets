@@ -20,10 +20,6 @@ const io = socketIo(server,{
 
 io.on('connection', (socket) => {
   console.log('A user connected');
-  socket.on('onWindowClose',()=>{
-    chatLog["log"]= [];
-    console.log("In WindowClosed");
-  })
   socket.on('chat message', (msg) => {
     chatLog.log.push(msg);
     chatLogParsed = JSON.stringify(chatLog);
@@ -31,6 +27,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
+    chatLog.log = [];
     console.log('A user disconnected');
   });
 });
