@@ -20,7 +20,10 @@ const io = socketIo(server,{
 
 io.on('connection', (socket) => {
   console.log('A user connected');
-  
+  socket.on('onWindowClose',()=>{
+    chatLog["log"]= [];
+    console.log(chatLog);
+  })
   socket.on('chat message', (msg) => {
     chatLog.log.push(msg);
     chatLogParsed = JSON.stringify(chatLog);
@@ -33,5 +36,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(3001, () => {
-  console.log('Server is running on http://localhost:3000');
+  console.log('Server is running on http://localhost:3001');
 });
