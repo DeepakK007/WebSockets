@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
   console.log('A user connected');
   socket.on('onWindowClose',()=>{
     chatLog["log"]= [];
-    console.log(chatLog);
+    console.log("In WindowClosed");
   })
   socket.on('chat message', (msg) => {
     chatLog.log.push(msg);
